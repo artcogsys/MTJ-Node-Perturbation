@@ -1,0 +1,63 @@
+command:
+  - ${env}
+  - python
+  - ${program}
+  - ${args_no_hyphens}
+method: grid
+name: results NP_MTJ_MNIST
+metric:
+  goal: minimize
+  name: train/loss
+parameters:
+  dataset:
+    values:
+      - MNIST # CIFAR100 # MNIST
+  device:
+    value: cuda:0
+  learning_rule:
+    value: NP
+  network.bias:
+    value: true
+  network.hidden_layer_size:
+    value: 500
+  network.n_hidden_layers:
+    value: 3
+  noise.clean_pass:
+    values:
+      - false
+  noise.distribution:
+    values:
+      - sMTJ
+  noise.n_sources:
+    value: 1
+  noise.sigma: # the MTJ noise delta level is about 0.012
+    values:
+      - 1
+  optimizer.decor_lr:
+    values:
+      - 1.9073e-07
+  optimizer.decor_method:
+    value: copi
+  optimizer.fwd_lr:
+    values:
+      - 4.8828e-05
+  optimizer.loss_func:
+    value: CCE
+  optimizer.type:
+    value: Adam
+  seed:
+    values:
+      - 42
+      - 43
+      - 44
+      - 45
+      - 46
+  training.batch_size:
+    value: 64
+  training.nb_epochs:
+    value: 2500
+  wandb.mode:
+    value: online
+  wandb.project:
+    value: "MTJNodePerturbation_Results"
+program: run.py

@@ -1,0 +1,41 @@
+default:
+  - _self_
+
+seed: 42
+device: cuda:0
+dataset: CIFAR100 # Options: MNIST, CIFAR10, CIFAR100
+learning_rule: NP
+
+network:
+  n_hidden_layers: 3
+  hidden_layer_size: 500
+  bias: true
+
+# Noise part is ignored if dataset is BP
+noise:
+  distribution: sMTJ #Options: Normal, CentredBernoulli, Bernoulli, sMTJ, SimulatedMTJ
+  sigma: 1.0 # Scaling factor applied to noise, must be 1.0 for s/simulatedMTJ, otherwise multiplied by sampled noise
+  clean_pass: False
+  n_sources: 1
+  p_skew: 0 # The skew in probability for Bernoulli noise (prob_up = 0.5 + p_skew)
+  offset: 0 # shifts the distribution, enters as offset * n_sources
+  # For sMTJ noise, a path is needed:
+  path: '~/sMTJ_Data/#140_r1c3p14_timeseries_0.1V/'
+
+optimizer:
+  type: Adam # Optimizer for forward weights
+  loss_func: CCE
+  fwd_lr: 1e-3
+  decor_lr: 0.0
+  decor_method: copi
+  betas: [0.9, 0.999]
+  eps: 1e-8
+
+training:
+  nb_epochs: 20
+  batch_size: 64
+
+wandb:
+  project: "MTJNodePerturbation"
+  mode: "offline"
+  entity: "CHBKoenders"
